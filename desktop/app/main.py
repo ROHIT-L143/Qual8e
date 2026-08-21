@@ -1,11 +1,12 @@
 import sys
+import qrcode
 
 from PySide6.QtCore import Qt
+from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import (
     QApplication,
     QLabel,
     QMainWindow,
-    QPushButton,
     QVBoxLayout,
     QWidget,
 )
@@ -16,7 +17,7 @@ class Qual8eWindow(QMainWindow):
         super().__init__()
 
         self.setWindowTitle("Qual8e")
-        self.setMinimumSize(900, 600)
+        self.setMinimumSize(900, 700)
 
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
@@ -27,30 +28,34 @@ class Qual8eWindow(QMainWindow):
         title = QLabel("Qual8e")
         title.setAlignment(Qt.AlignCenter)
 
-        subtitle = QLabel("Transfer files instantly")
+        subtitle = QLabel("Scan to connect")
         subtitle.setAlignment(Qt.AlignCenter)
 
-        qr_placeholder = QLabel("QR CODE")
-        qr_placeholder.setAlignment(Qt.AlignCenter)
-        qr_placeholder.setMinimumSize(250, 250)
+        # Temporary connection data
+        connection_data = "QUAL8E_SESSION_TEST"
+
+        # Generate QR code
+        qr = qrcode.make(connection_data)
+
+        # Save QR temporarily
+        qr_path = "qual8e_qr.png"
+        qr.save(qr_path)
+
+        # Display QR
+        qr_label = QLabel()
+        pixmap = QPixmap(qr_path)
+        qr_label.setPixmap(pixmap)
+        qr_label.setAlignment(Qt.AlignCenter)
 
         status = QLabel("Waiting for device...")
         status.setAlignment(Qt.AlignCenter)
 
-        connected = QLabel("Connected device: None")
-        connected.setAlignment(Qt.AlignCenter)
-
-        select_button = QPushButton("Select Files")
-
         layout.addWidget(title)
         layout.addWidget(subtitle)
         layout.addSpacing(20)
-        layout.addWidget(qr_placeholder, alignment=Qt.AlignCenter)
+        layout.addWidget(qr_label)
         layout.addSpacing(20)
         layout.addWidget(status)
-        layout.addWidget(connected)
-        layout.addSpacing(20)
-        layout.addWidget(select_button)
 
         central_widget.setLayout(layout)
 

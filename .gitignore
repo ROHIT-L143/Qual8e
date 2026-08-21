@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+venv/
+.venv/
+
+# Generated QR images
+desktop/*.png
+
+# Android
+android/.gradle/
+android/**/build/
+android/local.properties
